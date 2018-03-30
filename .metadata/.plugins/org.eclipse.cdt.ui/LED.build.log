@@ -1,0 +1,6 @@
+23:30:27 **** Incremental Build of configuration GNU ARM v4.9.3 - Default for project LED ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+23:30:28 Build Finished (took 983ms)
+

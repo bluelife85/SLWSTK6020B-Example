@@ -1,0 +1,2 @@
+22:41:14,849 [Worker-4] INFO com.iar.cdt.generic.toolchain.info.SdkToolchainInfo  - Using toolchain at C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\bin, version 8.11.2.13589
+22:41:14,864 [Worker-4] INFO com.iar.cdt.arm.toolchain.tables.ArmCoreFpuRegistry  - Enabling Cortex-*F workaround (ECL-1993) for EWARM 8.11.2
