@@ -1,0 +1,6 @@
+22:29:22 **** Incremental Build of configuration IAR ARM - Default for project soc-empty ****
+make -j4 all 
+make: Nothing to be done for `all'.
+
+22:29:23 Build Finished (took 1s.141ms)
+

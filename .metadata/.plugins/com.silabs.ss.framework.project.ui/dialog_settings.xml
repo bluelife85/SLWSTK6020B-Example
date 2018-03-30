@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="com.silabs.ss.framework.ide.project.core.cdtMbsProjectType">
+		<item value="LINK_LIBRARIES" key="settingImportModeOption"/>
+		<item value="LINK" key="importOption"/>
+		<item value="false" key="showInternal"/>
+		<list key="fileLocationHistory">
+			<item value="C:\Users\LG\Downloads\KBA_value_type"/>
+			<item value="C:\Users\LG\Downloads\KBA_central_client"/>
+		</list>
+		<list key="fileLocations">
+			<item value="C:\Users\LG\Downloads\KBA_value_type"/>
+		</list>
+	</section>
+</section>
