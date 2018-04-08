@@ -1,0 +1,48 @@
+19:31:47 **** Incremental Build of configuration IAR ARM - Default for project Propertise-Write No Response ****
+make -j4 all 
+Building target: Propertise-Write No Response.out
+Invoking: IAR Linker for ARM
+ilinkarm  ./platform/emlib/src/em_cmu.o ./platform/emlib/src/em_core.o ./platform/emlib/src/em_cryotimer.o ./platform/emlib/src/em_crypto.o ./platform/emlib/src/em_emu.o ./platform/emlib/src/em_gpio.o ./platform/emlib/src/em_i2c.o ./platform/emlib/src/em_msc.o ./platform/emlib/src/em_rmu.o ./platform/emlib/src/em_rtcc.o ./platform/emlib/src/em_system.o ./platform/emlib/src/em_usart.o  ./platform/emdrv/tempdrv/src/tempdrv.o  ./platform/emdrv/sleep/src/sleep.o  ./platform/Device/SiliconLabs/EFR32BG12P/Source/IAR/startup_efr32bg12p.o  ./platform/Device/SiliconLabs/EFR32BG12P/Source/system_efr32bg12p.o  ./hardware/kit/common/drivers/mx25flash_spi.o  ./hardware/kit/common/bsp/bsp_stk.o  ./application_properties.o ./communication_handler.o ./gatt_db.o ./init_app.o ./init_board.o ./init_mcu.o ./main.o ./pti.o   -o "Propertise-Write No Response.out" --config "E:\Silabs\Propertise-Write No Response\efr32bg12p332f1024gl125.icf" --no_wrap_diagnostics "E:\Silabs\Propertise-Write No Response\protocol\bluetooth\lib\EFR32BG12P\IAR\libmbedtls.a" "E:\Silabs\Propertise-Write No Response\protocol\bluetooth\lib\EFR32BG12P\IAR\libpsstore.a" "E:\Silabs\Propertise-Write No Response\platform\radio\rail_lib\autogen\librail_release\librail_efr32xg12_iar_release.a" "E:\Silabs\Propertise-Write No Response\protocol\bluetooth\lib\EFR32BG12P\IAR\binapploader.o" "E:\Silabs\Propertise-Write No Response\protocol\bluetooth\lib\EFR32BG12P\IAR\libbluetooth.a" --entry __iar_program_start --no_range_reservations --keep __iar_program_start  
+
+   IAR ELF Linker V8.11.2.13589/W32 for ARM
+   Copyright 2007-2017 IAR Systems AB.
+Warning[Lt009]: Inconsistent wchar_t size
+            gecko_bgapi_dfu.c.obj(libbluetooth.a) and 137 other objects have wchar_t size 16 bits
+            em_cmu.o and 43 other objects have wchar_t size 32 bits
+
+  125 582 bytes of readonly  code memory
+      916 bytes of readwrite code memory
+   48 325 bytes of readonly  data memory
+   17 556 bytes of readwrite data memory (+ 168 absolute)
+
+Errors: none
+Warnings: 1
+
+Link time:   0.27 (CPU)   0.27 (elapsed)
+ielftool --srec --verbose "Propertise-Write No Response.out" "Propertise-Write No Response.s37"  
+
+   IAR ELF Tool V10.1.5.191 [BUILT at IAR]
+   Copyright 2007-2017 IAR Systems AB.
+
+Loading Propertise-Write No Response.out
+Saving srec file to Propertise-Write No Response.s37
+ielftool --ihex --verbose "Propertise-Write No Response.out" "Propertise-Write No Response.hex"  
+
+   IAR ELF Tool V10.1.5.191 [BUILT at IAR]
+   Copyright 2007-2017 IAR Systems AB.
+
+Loading Propertise-Write No Response.out
+Saving ihex file to Propertise-Write No Response.hex
+ielftool --bin --verbose "Propertise-Write No Response.out" "Propertise-Write No Response.bin"
+
+   IAR ELF Tool V10.1.5.191 [BUILT at IAR]
+   Copyright 2007-2017 IAR Systems AB.
+
+Loading Propertise-Write No Response.out
+Saving binary file to Propertise-Write No Response.bin
+ielftool warning: Adding zero padding in address range 0x97c0-0x97ff
+Finished building target: Propertise-Write No Response.out
+ 
+
+19:31:49 Build Finished (took 1s.781ms)
+

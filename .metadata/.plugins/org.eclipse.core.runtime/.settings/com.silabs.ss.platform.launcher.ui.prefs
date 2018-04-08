@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-preferredSDKMapping={}
+preferredSDKMapping={"mcu.arm.efr32.bg12.efr32bg12p332f1024gl125 \: brd4001a\:0.0.0.A01 brd4103a\:0.0.0.A01"\:"com.silabs.sdk.stack.super\:1.1.1._310456152"}
