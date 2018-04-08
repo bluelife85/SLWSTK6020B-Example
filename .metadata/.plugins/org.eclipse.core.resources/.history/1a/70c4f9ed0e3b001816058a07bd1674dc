@@ -1,0 +1,159 @@
+/***************************************************************************//**
+ * @file init_board.c
+ *******************************************************************************
+ * # License
+ * <b>Copyright 2017 Silicon Labs, Inc. http://www.silabs.com</b>
+ *******************************************************************************
+ *
+ * This file is licensed under the Silabs License Agreement. See the file
+ * "Silabs_License_Agreement.txt" for details. Before using this software for
+ * any purpose, you must agree to the terms of that agreement.
+ *
+ ******************************************************************************/
+#if defined(HAL_CONFIG)
+#include "bsphalconfig.h"
+#include "hal-config.h"
+#else
+#include "bspconfig.h"
+#endif
+
+#include "board_features.h"
+
+#include "em_cmu.h"
+
+#include "em_usart.h"
+#include "mx25flash_spi.h"
+
+#include "bsp.h"
+
+void USART0_enter_DefaultMode_from_RESET(void) {
+
+	// $[USART_InitAsync]
+	USART_InitAsync_TypeDef initasync = USART_INITASYNC_DEFAULT;
+
+	initasync.enable = usartEnable;
+	initasync.baudrate = 115200;
+	initasync.databits = usartDatabits8;
+	initasync.parity = usartNoParity;
+	initasync.stopbits = usartStopbits1;
+	initasync.oversampling = usartOVS16;
+#if defined( USART_INPUT_RXPRS ) && defined( USART_CTRL_MVDIS )
+	initasync.mvdis = 0;
+	initasync.prsRxEnable = 0;
+	initasync.prsRxCh = 0;
+#endif
+
+	USART_InitAsync(USART0, &initasync);
+	// [USART_InitAsync]$
+
+	// $[USART_InitSync]
+	// [USART_InitSync]$
+
+	// $[USART_InitPrsTrigger]
+	USART_PrsTriggerInit_TypeDef initprs = USART_INITPRSTRIGGER_DEFAULT;
+
+	initprs.rxTriggerEnable = 0;
+	initprs.txTriggerEnable = 0;
+	initprs.prsTriggerChannel = usartPrsTriggerCh0;
+
+	USART_InitPrsTrigger(USART0, &initprs);
+	// [USART_InitPrsTrigger]$
+
+	// $[USART_InitIO]
+	/* Disable CLK pin */
+	USART0->ROUTELOC0 = (USART0->ROUTELOC0 & (~_USART_ROUTELOC0_CLKLOC_MASK))
+			| USART_ROUTELOC0_CLKLOC_LOC0;
+	USART0->ROUTEPEN = USART0->ROUTEPEN & (~USART_ROUTEPEN_CLKPEN);
+
+	/* Disable CS pin */
+	USART0->ROUTELOC0 = (USART0->ROUTELOC0 & (~_USART_ROUTELOC0_CSLOC_MASK))
+			| USART_ROUTELOC0_CSLOC_LOC0;
+	USART0->ROUTEPEN = USART0->ROUTEPEN & (~USART_ROUTEPEN_CSPEN);
+
+	/* Disable CTS pin */
+	USART0->ROUTELOC1 = (USART0->ROUTELOC1 & (~_USART_ROUTELOC1_CTSLOC_MASK))
+			| USART_ROUTELOC1_CTSLOC_LOC0;
+	USART0->ROUTEPEN = USART0->ROUTEPEN & (~USART_ROUTEPEN_CTSPEN);
+
+	/* Disable RTS pin */
+	USART0->ROUTELOC1 = (USART0->ROUTELOC1 & (~_USART_ROUTELOC1_RTSLOC_MASK))
+			| USART_ROUTELOC1_RTSLOC_LOC0;
+	USART0->ROUTEPEN = USART0->ROUTEPEN & (~USART_ROUTEPEN_RTSPEN);
+
+	/* Set up RX pin */
+	USART0->ROUTELOC0 = (USART0->ROUTELOC0 & (~_USART_ROUTELOC0_RXLOC_MASK))
+			| USART_ROUTELOC0_RXLOC_LOC0;
+	USART0->ROUTEPEN = USART0->ROUTEPEN | USART_ROUTEPEN_RXPEN;
+
+	/* Set up TX pin */
+	USART0->ROUTELOC0 = (USART0->ROUTELOC0 & (~_USART_ROUTELOC0_TXLOC_MASK))
+			| USART_ROUTELOC0_TXLOC_LOC0;
+	USART0->ROUTEPEN = USART0->ROUTEPEN | USART_ROUTEPEN_TXPEN;
+
+	// [USART_InitIO]$
+
+	// $[USART_Misc]
+	/* Disable CTS */
+	USART0->CTRLX = USART0->CTRLX & (~USART_CTRLX_CTSEN);
+	/* Set CTS active low */
+	USART0->CTRLX = USART0->CTRLX & (~USART_CTRLX_CTSINV);
+	/* Set RTS active low */
+	USART0->CTRLX = USART0->CTRLX & (~USART_CTRLX_RTSINV);
+	/* Set CS active low */
+	USART0->CTRL = USART0->CTRL & (~USART_CTRL_CSINV);
+	/* Set TX active high */
+	USART0->CTRL = USART0->CTRL & (~USART_CTRL_TXINV);
+	/* Set RX active high */
+	USART0->CTRL = USART0->CTRL & (~USART_CTRL_RXINV);
+	// [USART_Misc]$
+
+	// $[USART_Enable]
+
+	/* Enable USART if opted by user */
+	USART_Enable(USART0, usartEnable);
+	// [USART_Enable]$
+
+}
+
+void initBoard(void) {
+	// Enable clock for CRYOTIMER
+	CMU_ClockEnable(cmuClock_CRYOTIMER, true);
+	// Enable clock for PRS
+	CMU_ClockEnable(cmuClock_PRS, true);
+#ifdef FEATURE_EXP_HEADER_USART3
+	// Enable clock for USART3
+	CMU_ClockEnable(cmuClock_USART3, true);
+#else
+	// Enable clock for USART0
+	CMU_ClockEnable(cmuClock_USART0, true);
+#endif
+	// Enable GPIO clock source
+	CMU_ClockEnable(cmuClock_GPIO, true);
+
+	// Put the SPI flash into Deep Power Down mode for those radio boards where it is available
+	MX25_init();
+	MX25_DP();
+	// We must disable SPI communication
+	USART_Reset(MX25_USART);
+
+	// USART0 initialize
+	CMU_ClockEnable(cmuClock_USART0, true);
+	USART0_enter_DefaultMode_from_RESET();
+        
+        /* Clear previous RX interrupts */
+        USART_IntClear(USART0, USART_IF_RXDATAV);
+        NVIC_ClearPendingIRQ(USART0_RX_IRQn);
+        
+        /* Enable RX interrupts */
+        USART_IntEnable(USART0, USART_IF_RXDATAV);
+        NVIC_EnableIRQ(USART0_RX_IRQn);
+
+	/* Pin PA0 is configured to Push-pull */
+	GPIO_PinModeSet(gpioPortA, 0, gpioModePushPull, 0);
+
+	/* Pin PA1 is configured to Input enabled */
+	GPIO_PinModeSet(gpioPortA, 1, gpioModeInput, 0);
+
+	/* Pin PA5 is configured to Push-pull */
+	GPIO_PinModeSet(gpioPortA, 5, gpioModePushPull, 0);
+}
